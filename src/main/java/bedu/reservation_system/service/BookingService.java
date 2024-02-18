@@ -8,14 +8,12 @@ import bedu.reservation_system.repository.TokenRepository;
 import org.springframework.transaction.annotation.Transactional;
 import bedu.reservation_system.repository.TicketRepository;
 
-import org.hibernate.mapping.Map;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import java.util.UUID;
 import java.util.Random;
 import okhttp3.*;
 import java.io.IOException;
-import java.util.HashMap;
 
 @Service
 public class BookingService {
@@ -61,6 +59,11 @@ public class BookingService {
 
     public Bookings update(Bookings booking) {
         return bookingRepository.save(booking);
+    }
+
+    @SuppressWarnings("null")
+    public void delete(Bookings booking) {
+        bookingRepository.delete(booking);
     }
 
     private String generateUniqueTicket() {

@@ -9,6 +9,9 @@ import jakarta.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import lombok.Data;
@@ -40,9 +43,11 @@ public class Bookings {
     private String phoneNumber;
 
     @OneToOne
+    @JsonManagedReference
     private Tokens token;
 
     @OneToOne
+    @JsonManagedReference
     private Tickets ticket;
 
     private boolean validated = false;

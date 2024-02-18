@@ -1,5 +1,7 @@
 package bedu.reservation_system.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,5 +24,6 @@ public class Tickets {
     private String ticket;
 
     @OneToOne(mappedBy = "ticket")
+    @JsonBackReference
     private Bookings booking;
 }

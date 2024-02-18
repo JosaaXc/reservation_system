@@ -15,4 +15,9 @@ public class TokenService {
     public Tokens findByToken(int token) {
         return tokenRepository.findByToken(token);
     }
+    
+    @SuppressWarnings("null")
+    public void delete(Tokens token) {
+        tokenRepository.delete(token);
+    }
 }

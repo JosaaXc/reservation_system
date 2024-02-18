@@ -14,6 +14,8 @@ import java.util.UUID;
 import java.util.Random;
 import okhttp3.*;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Service
 public class BookingService {
@@ -64,6 +66,10 @@ public class BookingService {
     @SuppressWarnings("null")
     public void delete(Bookings booking) {
         bookingRepository.delete(booking);
+    }
+
+    public Bookings findByDateAndTimeAndValidated(LocalDate date, LocalTime time, boolean validated) {
+        return bookingRepository.findByDateAndTimeAndValidated(date, time, validated);
     }
 
     private String generateUniqueTicket() {

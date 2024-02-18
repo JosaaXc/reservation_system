@@ -21,4 +21,8 @@ public class AvailableTablesService {
         return availableTablesRepository.save(table);
     }
 
+    public AvailableTables update(AvailableTables table) {
+        return availableTablesRepository.save(table);
+    }
+
 }

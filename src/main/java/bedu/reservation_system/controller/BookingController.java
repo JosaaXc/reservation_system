@@ -33,6 +33,11 @@ public class BookingController {
                 return new ResponseEntity<>("Table is already occupied", HttpStatus.BAD_REQUEST);
             }
 
+            Bookings bookedBooking = bookingService.findByDateAndTimeAndValidated(booking.getDate(), booking.getTime(), true);
+            if (bookedBooking != null) {
+                return new ResponseEntity<>("The date and time are already booked", HttpStatus.BAD_REQUEST);
+            }
+
             ResponseEntity<?> response = bookingService.create(booking);  // Aquí creamos una nueva reserva, generamos un nuevo token y enviamos un mensaje
             return response;
         } catch (Exception e) {
@@ -49,9 +54,26 @@ public class BookingController {
             }
 
             if (existingBooking.getNumTable() != newBooking.getNumTable()) {
-                AvailableTables table = availableTablesService.findByNumTable(newBooking.getNumTable());
-                if (table != null && table.isOccupied()) {
-                    return new ResponseEntity<>("Table is already occupied", HttpStatus.BAD_REQUEST);
+                AvailableTables oldTable = availableTablesService.findByNumTable(existingBooking.getNumTable());
+                AvailableTables newTable = availableTablesService.findByNumTable(newBooking.getNumTable());
+                if (newTable != null && newTable.isOccupied()) {
+                    return new ResponseEntity<>("New table is already occupied", HttpStatus.BAD_REQUEST);
+                }
+
+                if (oldTable != null) {
+                    oldTable.setOccupied(false);
+                    availableTablesService.update(oldTable);
+                }
+                if (newTable != null) {
+                    newTable.setOccupied(true);
+                    availableTablesService.update(newTable);
+                }
+            }
+
+            if (newBooking.getDate() != null && newBooking.getTime() != null) {
+                Bookings bookedBooking = bookingService.findByDateAndTimeAndValidated(newBooking.getDate(), newBooking.getTime(), true);
+                if (bookedBooking != null) {
+                    return new ResponseEntity<>("The date and time are already booked", HttpStatus.BAD_REQUEST);
                 }
             }
 
@@ -75,4 +97,5 @@ public class BookingController {
             return new ResponseEntity<>("Failed to update booking", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 }
